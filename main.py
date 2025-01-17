@@ -4,12 +4,10 @@ from bigquery.client import new_biquery_client
 
 
 def main():
-    endpoint = "https://api.carrismetropolitana.pt/"
-    db_client = new_biquery_client()
-
-    municipalities_param = "municipalities"
-    municipalities_data = get_json_data(endpoint=endpoint + municipalities_param)
-    load_table_from_json(db_client, municipalities_param, municipalities_data)
+    # db_client = new_biquery_client()
+    # data = get_json_data()
+    # load_table_from_json(db_client, "stops", data)
+    print("Running Pipeline")
 
 
 if __name__ == "__main__":

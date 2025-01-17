@@ -2,15 +2,17 @@ import os
 import requests
 
 DATASET_ID = os.getenv("DATASET_ID")
+ENDPOINT = "https://api.carrismetropolitana.pt/"
+PARAM = "stops"
 
 
-def get_json_data(endpoint):
+def get_json_data():
     try:
-        response = requests.get(endpoint)
+        response = requests.get(ENDPOINT + PARAM)
 
         if response.ok:
             data = response.json()
-            print(f"Data from {endpoint} endpoint was fetched")
+            print(f"Data from {PARAM} endpoint was fetched")
 
             return data
     except Exception as error:
