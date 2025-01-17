@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-from etl import get_json_data, load_table_from_json
-from bigquery import new_biquery_client
+from pipeline.etl import get_json_data, load_table_from_json
+from bigquery.client import new_biquery_client
 
 
 def main():
