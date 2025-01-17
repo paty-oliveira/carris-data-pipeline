@@ -5,10 +5,6 @@ services:
     volumes:
       - .:/app
       - pip_cache:/root/.cache/pip
-      - ${LOCAL_GCP_KEYS_PATH}:/app/service_account_key.json
-    environment:
-      - SERVICE_ACCOUNT_FILE=/app/service_account_key.json
-      - DATASET_ID=${DATASET_ID}
     develop:
       watch:
         - action: rebuild
@@ -46,11 +42,13 @@ services:
       AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
       AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
       _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+      SERVICE_ACCOUNT_FILE: /opt/airflow/config/service_account_key.json
     volumes:
       - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
       - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
       - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
       - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+      - ${LOCAL_GCP_KEYS_PATH:-.}:/opt/airflow/config/service_account_key.json
     user: "${AIRFLOW_UID:-50000}:0"
     depends_on:
       &airflow-common-depends-on

@@ -172,4 +172,4 @@ cython_debug/
 
 logs/
 
-service-account-key.json
+config/
