@@ -1,5 +1,5 @@
 services:
-  etl:
+  elt:
     build:
       context: .
     volumes:
