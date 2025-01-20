@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
 
 from airflow.decorators import task, dag
-from etl import extract_and_load
+from etl import extract_json_data_and_load, extract_zip_files_and_load
 
+
+ENDPOINT = "https://api.carrismetropolitana.pt/"
+DATABASE_SCHEMA = "raw"
 
 default_args = {
     "owner": "airflow",
@@ -15,12 +18,22 @@ default_args = {
 
 
 @task(task_id="extract_and_load_carris_data")
-def extract_and_load_carris_data():
-    endpoint = "https://api.carrismetropolitana.pt/"
+def extract_and_load_carris_json_data():
     params = ["vehicles", "lines", "stops", "alerts", "municipalities", "routes"]
-    database_schema = "raw"
 
-    return extract_and_load(endpoint, params, database_schema)
+    return extract_json_data_and_load(ENDPOINT, params, DATABASE_SCHEMA)
+
+
+@task(task_id="extract_and_load_carris_gzip_data")
+def extract_and_load_carris_gzip_data():
+    param = "gtfs"
+
+    return extract_zip_files_and_load(ENDPOINT, param, DATABASE_SCHEMA)
+
+
+@task(task_id="transform_carris_data")
+def transform_carris_data():
+    print("Transforming Carris data")
 
 
 @dag(
@@ -33,7 +46,11 @@ def extract_and_load_carris_data():
     catchup=False,
 )
 def carris_pipeline():
-    extract_and_load_carris_data()
+    extract_json_data = extract_and_load_carris_json_data()
+    extract_gzip_data = extract_and_load_carris_gzip_data()
+    transform = transform_carris_data()
+
+    [extract_json_data, extract_gzip_data] >> transform
 
 
 carris_pipeline()
