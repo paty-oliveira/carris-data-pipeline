@@ -1,9 +1,9 @@
 import requests
-from db import new_biquery_client
 from zipfile import ZipFile
 from io import BytesIO
 import os
 import pandas as pd
+from libs.db import new_biquery_client
 
 
 def get_json_data(endpoint, param):

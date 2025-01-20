@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from airflow.decorators import task, dag
-from etl import extract_json_data_and_load, extract_zip_files_and_load
+from libs.etl import extract_json_data_and_load, extract_zip_files_and_load
 
 
 ENDPOINT = "https://api.carrismetropolitana.pt/"
