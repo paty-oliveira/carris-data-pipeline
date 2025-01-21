@@ -7,3 +7,5 @@ google-auth-httplib2
 pyarrow
 python-dotenv
 apache-airflow
+dbt-core
+dbt-bigquery
