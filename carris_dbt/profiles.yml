@@ -4,7 +4,7 @@ carris_dbt:
       dataset: raw
       job_execution_timeout_seconds: 300
       job_retries: 1
-      keyfile: /Users/patricia-oliveira/gcp_keys/service_account_key.json
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
       location: EU
       method: service-account
       priority: interactive

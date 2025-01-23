@@ -11,6 +11,8 @@ RUN pip install dbt-core dbt-bigquery
 # Create dbt profiles directory
 RUN mkdir -p /root/.dbt
 
+ENV GOOGLE_APPLICATION_CREDENTIALS=/root/.dbt/service-account-key.json
+
 # Define dbt profiles directory
 ENV DBT_PROFILES_DIR=/root/.dbt
 
