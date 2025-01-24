@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from airflow.decorators import task, dag
-from airflow.providers.docker.operators.docker import DockerOperator
 from libs.pipeline import extract_json_data_and_load, extract_zip_files_and_load
 
 
@@ -32,15 +31,9 @@ def extract_and_load_carris_gzip_data():
     return extract_zip_files_and_load(ENDPOINT, param, DATABASE_SCHEMA)
 
 
-transform_data = DockerOperator(
-    task_id="transform_carris_data",
-    image="patyoliveira/carris-dbt:latest",
-    api_version="auto",
-    auto_remove=True,
-    command="dbt run",
-    docker_url="unix://var/run/docker.sock",
-    network_mode="bridge",
-)
+@task(task_id="transform_data")
+def transform_data_():
+    pass
 
 
 @dag(
@@ -55,6 +48,7 @@ transform_data = DockerOperator(
 def carris_pipeline():
     extract_and_load_json_data = extract_and_load_carris_json_data()
     extract_and_load_gzip_data = extract_and_load_carris_gzip_data()
+    transform_data = transform_data_()
 
     [extract_and_load_json_data, extract_and_load_gzip_data] >> transform_data
 

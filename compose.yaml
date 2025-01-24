@@ -1,15 +1,4 @@
 services:
-  elt:
-    build:
-      context: .
-    volumes:
-      - .:/app
-      - pip_cache:/root/.cache/pip
-    develop:
-      watch:
-        - action: rebuild
-          path: ./main.py
-
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -49,8 +38,7 @@ services:
       - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
       - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
       - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-      - ${LOCAL_GCP_KEYS_PATH:-.}:/opt/airflow/config/service_account_key.json
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/gcp_keys/service_account_key.json:/opt/airflow/config/service_account_key.json
     user: "${AIRFLOW_UID:-50000}:0"
     depends_on:
       &airflow-common-depends-on
