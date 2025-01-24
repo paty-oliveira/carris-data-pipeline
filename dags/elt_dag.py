@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 
 from airflow.decorators import task, dag
@@ -6,6 +7,7 @@ from libs.pipeline import extract_json_data_and_load, extract_zip_files_and_load
 
 ENDPOINT = "https://api.carrismetropolitana.pt/"
 DATABASE_SCHEMA = "raw"
+DBT_PROJECT_DIR = os.getenv("DBT_PROJECT_DIR")
 
 default_args = {
     "owner": "airflow",
@@ -31,9 +33,9 @@ def extract_and_load_carris_gzip_data():
     return extract_zip_files_and_load(ENDPOINT, param, DATABASE_SCHEMA)
 
 
-@task(task_id="transform_data")
-def transform_data_():
-    pass
+@task.bash(task_id="transform_carris_data")
+def transform_carris_data():
+    return f"cd {DBT_PROJECT_DIR} && dbt run --profiles-dir ."
 
 
 @dag(
@@ -48,7 +50,7 @@ def transform_data_():
 def carris_pipeline():
     extract_and_load_json_data = extract_and_load_carris_json_data()
     extract_and_load_gzip_data = extract_and_load_carris_gzip_data()
-    transform_data = transform_data_()
+    transform_data = transform_carris_data()
 
     [extract_and_load_json_data, extract_and_load_gzip_data] >> transform_data
 
