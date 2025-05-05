@@ -1,12 +1,12 @@
 # ELT Pipeline for Public Transportation Information
 
-This project implements an ELT pipeline to extract data from the Carris API, transform it using dbt, and load it into BigQuery for analytics purposes. The pipeline is orchestrated using Apache Airflow, and dbt is used for transformation steps.\
+This project implements a simplified ELT pipeline to **extract** data from the [Carris API](https://github.com/carrismetropolitana/api) and **load** it into **BigQuery** for testing purposes. The pipeline is orchestrated using **Apache Airflow** and designed as a solution to test and experiment with Airflow DAGs and scheduling.
 
-This project is built using Docker Compose, and it integrates the following technologies:
-- **Carris API**: [data source](https://github.com/carrismetropolitana/api) for public transportation information in the Lisbon Metropolitan area.
-- **Apache Airflow**: for orchestration of the ETL pipeline.
-- **dbt (Data Build Tool)**: for data transformation.
-- **BigQuery**: for data storage and analysis.
+The project is built using Docker Compose and integrates the following technologies:
+
+- **Carris API**: Data source for public transportation information in the Lisbon Metropolitan area.
+- **Apache Airflow**: Orchestration of the ELT pipeline.
+- **BigQuery**: Destination for loading and analyzing data.
 
 ## Project Structure
 ```
@@ -16,11 +16,6 @@ This project is built using Docker Compose, and it integrates the following tech
 │   ├── libs
 │   │   ├── etl.py                  # Custom extraction and loading functions
 │   │   └── db.py                   # Custom database functions for Bigquery
-├── dbt                             # dbt project directory
-│   ├── dbt_project.yml             # dbt project configuration
-│   ├── profiles.yml                # dbt profiles for BigQuery connection
-│   ├── models                      # dbt models directory for transformations
-│   └── ...
 └── docker-compose.yml              # Docker Compose configuration
 ```
 
@@ -38,24 +33,7 @@ This will:
 - Start a dbt container for running transformations.
 - Make the Carris API extraction tasks run on a daily basis.
 
-### Configure dbt profiles
-Make sure to configure your profiles.yml file in the dbt directory with the correct credentials to connect to your BigQuery project.
 
-Example of a BigQuery profile (profiles.yml):
-```yml
-your_project_name:
-  target: dev
-  outputs:
-    dev:
-      type: bigquery
-      method: service-account
-      project: your_project_id
-      dataset: your_dataset
-      keyfile: /path/to/your/service_account_keyfile.json
-      threads: 1
-      timeout_seconds: 300
-
-```
 ### Start the Airflow Web UI
 Once the containers are up, you can access the Airflow web interface by navigating to http://localhost:8080.
 
@@ -74,10 +52,6 @@ GZIP compressed data (GTFS format) is also extracted and loaded.
 - **Loading into BigQuery**
 
 Data is loaded into BigQuery into a schema named raw.
-
-- **Transformation of raw data**
-
-dbt is used to transform the raw data into structured and analyzable models.
 
 - **Scheduling**
 

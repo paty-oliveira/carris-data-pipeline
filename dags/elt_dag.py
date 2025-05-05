@@ -33,11 +33,6 @@ def extract_and_load_carris_gzip_data():
     return extract_zip_files_and_load(ENDPOINT, param, DATABASE_SCHEMA)
 
 
-@task.bash(task_id="transform_carris_data")
-def transform_carris_data():
-    return f"cd {DBT_PROJECT_DIR} && dbt run --profiles-dir ."
-
-
 @dag(
     dag_id="carris_pipeline",
     default_args=default_args,
@@ -50,9 +45,8 @@ def transform_carris_data():
 def carris_pipeline():
     extract_and_load_json_data = extract_and_load_carris_json_data()
     extract_and_load_gzip_data = extract_and_load_carris_gzip_data()
-    transform_data = transform_carris_data()
 
-    [extract_and_load_json_data, extract_and_load_gzip_data] >> transform_data
+    [extract_and_load_json_data, extract_and_load_gzip_data]
 
 
 carris_pipeline()
