@@ -39,7 +39,7 @@ services:
       - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
       - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
       - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
-      - ${HOME}/gcp_keys/service_account_key.json:/opt/airflow/config/service_account_key.json
+      - ${HOME}/gcp_keys/:/opt/airflow/config/
       - ${AIRFLOW_PROJ_DIR:-.}/carris_dbt:/opt/airflow/dbt
       - ${AIRFLOW_PROJ_DIR:-.}/requirements.txt:/opt/airflow/requirements.txt
     user: "${AIRFLOW_UID:-50000}:0"

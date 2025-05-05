@@ -5,7 +5,7 @@ from airflow.decorators import task, dag
 from libs.pipeline import extract_json_data_and_load, extract_zip_files_and_load
 
 
-ENDPOINT = "https://api.carrismetropolitana.pt/"
+ENDPOINT = "https://api.carrismetropolitana.pt/v1"
 DATABASE_SCHEMA = "raw"
 DBT_PROJECT_DIR = os.getenv("DBT_PROJECT_DIR")
 
